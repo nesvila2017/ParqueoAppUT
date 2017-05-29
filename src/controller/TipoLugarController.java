@@ -90,7 +90,7 @@ public class TipoLugarController {
             return tipoLugar;
 
         } catch (SQLException ex) {
-            System.out.println("Error al mostra los tipos de lugares" + ex);
+            System.out.println("Error al mostrar los tipos de lugares" + ex);
             return null;
         } finally {
             connect.cerraConexion();

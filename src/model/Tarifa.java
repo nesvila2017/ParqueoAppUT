@@ -12,14 +12,17 @@ package model;
 public class Tarifa {
 
     private int idTarifa;
+    private String nomTarifa;
     private double precioFraccion;
     private int idTipoVehiculo;
+    
 
     public Tarifa() {
     }
 
-    public Tarifa(int idTarifa, double precioFraccion, int idTipoVehiculo) {
+    public Tarifa(int idTarifa, String nomTarifa, double precioFraccion, int idTipoVehiculo) {
         this.idTarifa = idTarifa;
+        this.nomTarifa = nomTarifa;
         this.precioFraccion = precioFraccion;
         this.idTipoVehiculo = idTipoVehiculo;
     }
@@ -32,6 +35,15 @@ public class Tarifa {
         this.idTarifa = idTarifa;
     }
 
+    public String getNomTarifa() {
+        return nomTarifa;
+    }
+
+    public void setNomTarifa(String nomTarifa) {
+        this.nomTarifa = nomTarifa;
+    }
+
+    
     public double getPrecioFraccion() {
         return precioFraccion;
     }
