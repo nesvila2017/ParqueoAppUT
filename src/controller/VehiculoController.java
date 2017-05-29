@@ -85,7 +85,6 @@ public class VehiculoController {
     
     private List<Vehiculo> mostrarTodosLosVehiculosRegistrados() {
         ArrayList<Vehiculo> vlista = new ArrayList<>();
-        
         PreparedStatement ps;
         ResultSet rs;
         try {
