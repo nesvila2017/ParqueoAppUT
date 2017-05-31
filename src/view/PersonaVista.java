@@ -317,12 +317,11 @@ public class PersonaVista extends javax.swing.JFrame {
         PersonaController pc = new PersonaController();
         //pc.eliminarPersona(txtNu);
         
-        
-        
     }//GEN-LAST:event_EliminarPersonaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed

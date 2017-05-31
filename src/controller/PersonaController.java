@@ -28,7 +28,7 @@ public class PersonaController {
     public void CreatePersona(int ident, String nom, String ape) {
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("INSERT INTO Persona(numIdentPersona, nombres,apellidos) values (?,?,?)");
+            ps = connect.getConexion().prepareStatement("INSERT INTO Persona (numIdentPersona, nombres,apellidos) values (?,?,?)");
             ps.setInt(1, ident);
             ps.setString(2, nom);
             ps.setString(3, ape);
@@ -38,7 +38,7 @@ public class PersonaController {
         } catch (SQLException e) {
             System.out.println("Error al Insertar Persona: " + e);
         } finally {
-            connect.cerraConexion();
+            //connect.cerraConexion();
         }
     }
 
@@ -55,7 +55,7 @@ public class PersonaController {
         } catch (SQLException e) {
             System.out.println("Error actualizacion de persona: " + e);
         } finally {
-            connect.cerraConexion();
+            //connect.cerraConexion();
         }
     }
 
@@ -69,7 +69,7 @@ public class PersonaController {
         } catch (SQLException e) {
             System.out.println("Error al eliminar persona: " + e);
         } finally {
-            connect.cerraConexion();
+            //connect.cerraConexion();
         }
 
     }
@@ -90,13 +90,14 @@ public class PersonaController {
                 personas.add(persona);
 
             }
+            ps.close();
             return personas;
 
         } catch (SQLException ex) {
             System.out.println("Error al mostrar personas" + ex);
             return null;
         } finally {
-            connect.cerraConexion();
+            //connect.cerraConexion();
         }
 
     }
@@ -115,12 +116,12 @@ public class PersonaController {
                 p.setApePersona(rs.getString(3));
                 return p;
             }
-
+            ps.close();
         } catch (SQLException ex) {
             System.out.println("Error al mostrar persona por id: " + ex);
             return null;
         } finally{
-            connect.cerraConexion();
+            //connect.cerraConexion();
         }
         return p;
 
