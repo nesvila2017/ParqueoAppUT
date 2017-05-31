@@ -6,9 +6,9 @@
 package view;
 
 import controller.MensualidadController;
-import java.time.Clock;
-import java.time.LocalDate;
-import java.util.Calendar;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+import model.Mensualidad;
 
 /**
  *
@@ -147,6 +147,30 @@ public class MensualidadView extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+       /* private void mostrarPersonas() {
+        MensualidadController mc = new MensualidadController();
+        List<Mensualidad> lp = mc.mostrarPersonas();
+        DefaultTableModel dt = new DefaultTableModel();
+        String[] cabecera = new String[]{"Número Identificación", "Nombre", "Apellido"};
+        dt.setColumnIdentifiers(cabecera);
+        tablaPersonas.setModel(dt);
+        try {
+            dt.setNumRows(lp.size());
+            for (int i = 0; i < lp.size(); i++) {
+                dt.setValueAt(lp.get(i).getNumIdent(), i, 0);
+                dt.setValueAt(lp.get(i).getNomPersona(), i, 1);
+                dt.setValueAt(lp.get(i).getApePersona(), i, 2);
+
+            }
+        } catch (Exception e) {
+            System.out.println("Error al llenar tabla: " + e);
+        }
+
+    }*/
+    
+    
+    
     /**
      * @param args the command line arguments
      */
