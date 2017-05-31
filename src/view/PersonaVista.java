@@ -218,38 +218,49 @@ public class PersonaVista extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void registrarPersona() {
-
         if ("".equals(txtNumIdent.getText()) || "".equals(txtNomPersona.getText()) || "".equals(txtApePersona.getText()) || txtNumIdent.getText().length() > 10 || txtNumIdent.getText().length() < 10) {
+
             JOptionPane.showMessageDialog(null, "No ha digitado los datos correspondiente o su numero de identifacion es mayor a 10 digitos.", "Error al registrar", JOptionPane.ERROR_MESSAGE);
         } else {
-            int numIdent = Integer.parseInt(txtNumIdent.getText());
-            String nomPers = txtNomPersona.getText();
-            String apePers = txtApePersona.getText();
             PersonaController pc = new PersonaController();
-            pc.CreatePersona(numIdent, nomPers, apePers);
-            JOptionPane.showMessageDialog(null, "Se ha registrado la persona.", "Registro de Persona Exitoso.", JOptionPane.INFORMATION_MESSAGE);
-            txtNumIdent.setText("");
-            txtNomPersona.setText("");
-            txtApePersona.setText("");
-            txtNumIdent.requestFocus();
+            //
+            Persona p = pc.mostrarPersonaPorId(Integer.parseInt(txtNumIdent.getText()));
+
+            if (p.getNumIdent() == Integer.parseInt(txtNumIdent.getText())) {
+                 JOptionPane.showMessageDialog(null, "El cliente ya existe.", "El cliente ya existe.", JOptionPane.ERROR_MESSAGE);
+            } else {
+
+                int numIdent = Integer.parseInt(txtNumIdent.getText());
+                String nomPers = txtNomPersona.getText();
+                String apePers = txtApePersona.getText();
+
+                pc.CreatePersona(numIdent, nomPers, apePers);
+                JOptionPane.showMessageDialog(null, "Se ha registrado la persona.", "Registro de Persona Exitoso.", JOptionPane.INFORMATION_MESSAGE);
+                txtNumIdent.setText("");
+                txtNomPersona.setText("");
+                txtApePersona.setText("");
+                txtNumIdent.requestFocus();
+            }
         }
 
     }
-
+   
     private void buscarPersona(int numIdent) {
         PersonaController pc = new PersonaController();
         Persona p = pc.mostrarPersonaPorId(numIdent);
-        System.out.println("contenido p: " +p.getNumIdent());
+        System.out.println("contenido p: " + p.getNumIdent());
+        
         if (p.getNumIdent() == 0) {
-           JOptionPane.showMessageDialog(null, "No se ha encontrado la persona o el documento no existe.", "No se ha encontrado la persona.", JOptionPane.ERROR_MESSAGE);
-           txtNumIdent.setText("");
-           txtNumIdent.requestFocus(); 
+            JOptionPane.showMessageDialog(null, "No se ha encontrado la persona o el documento no existe.", "No se ha encontrado la persona.", JOptionPane.ERROR_MESSAGE);
+            txtNumIdent.setText("");
+            txtNumIdent.requestFocus();
         } else {
             txtNumIdent.setText(String.valueOf(p.getNumIdent()));
-           txtNomPersona.setText(p.getNomPersona());
+            txtNomPersona.setText(p.getNomPersona());
             txtApePersona.setText(p.getApePersona());
+            
         }
-        
+
     }
 
     private void mostrarPersonas() {
@@ -290,11 +301,24 @@ public class PersonaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngresarPersonaActionPerformed
 
     private void ActualizarPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ActualizarPersonaActionPerformed
-        // TODO add your handling code here:
+        PersonaController pc = new PersonaController();
+        Persona p = pc.mostrarPersonaPorId(Integer.parseInt(txtNumIdent.getText()));
+        if (p.getNumIdent() == 0) {
+            JOptionPane.showMessageDialog(null,"La persona que desea actuazliar no esta registrada.","Error al actualizar", JOptionPane.ERROR_MESSAGE);
+        } else {
+            pc.actualizarPersona(Integer.parseInt(txtNumIdent.getText()), txtNomPersona.getText(), txtApePersona.getText());
+        }
+        
+        
+        
     }//GEN-LAST:event_ActualizarPersonaActionPerformed
 
     private void EliminarPersonaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_EliminarPersonaActionPerformed
-        // TODO add your handling code here:
+        PersonaController pc = new PersonaController();
+        //pc.eliminarPersona(txtNu);
+        
+        
+        
     }//GEN-LAST:event_EliminarPersonaActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -307,8 +331,8 @@ public class PersonaVista extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void tablaPersonasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaPersonasMouseClicked
-           int numIdent = Integer.parseInt(String.valueOf(tablaPersonas.getValueAt(tablaPersonas.getSelectedRow(),0)));
-            buscarPersona(numIdent);
+        int numIdent = Integer.parseInt(String.valueOf(tablaPersonas.getValueAt(tablaPersonas.getSelectedRow(), 0)));
+        buscarPersona(numIdent);
         //
     }//GEN-LAST:event_tablaPersonasMouseClicked
 
