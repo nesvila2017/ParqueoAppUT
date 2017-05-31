@@ -24,6 +24,7 @@ public class Conexion {
         try {
             Class.forName("com.mysql.jdbc.Driver");
             conector = DriverManager.getConnection(URL, USER, PASS);
+            
 
         } catch (ClassNotFoundException | SQLException error) {
             System.out.println("Error de conexion" + error);
