@@ -5,17 +5,112 @@
  */
 package view;
 
+import controller.FacturaController;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+
 /**
  *
  * @author GIGABYTE
  */
 public class LugarParqueoView extends javax.swing.JFrame {
 
+    private JPanel panel;
+    private GridBagLayout gridBag;
+    private GridBagConstraints constraints;
+    private JButton b1;
+    private JTextField t1;
+    private JTextArea ta1;
+    private JRadioButton r1;
+    private JRadioButton r2;
+    private JLabel l1;
+    private ArrayList<String> nombreBotones;
+    int cantLugares = 5;
+    int cantColumn = 5;
+
     /**
      * Creates new form LugarParqueo
      */
     public LugarParqueoView() {
         initComponents();
+        mostrarLugarParqueo();
+        placaParte2.setOpaque(false);
+        placaParte1.setOpaque(false);
+    }
+
+    private void mostrarLugarParqueo() {
+
+        nombreBotones = new ArrayList<>();
+        nombreBotones.add("Nombre: ");
+        nombreBotones.add("Apellido: ");
+        nombreBotones.add("Dirección: ");
+        nombreBotones.add("Teléfono: ");
+        nombreBotones.add("Celular");
+
+        gridBag = new GridBagLayout();
+        panel = new JPanel(gridBag); //Objeto JPanel con parametro de cual Layout se aplicara. 
+        //GridBagLayout, es el tipo de layout versatil que se manejara para crear una GUI.
+        constraints = new GridBagConstraints();
+        //Se establecen los parametros de visualizacion para los componentes por medio de un objeto de la Clase GridBagConstraints
+        //
+        for (int i = 0; i < cantColumn; i++) {
+            for (int j = 0; j < cantLugares; j++) {
+                JLabel jl = new JLabel(j + "" + i);
+                jl.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ResourcesVisual/carro.png")));
+                constraints.fill = GridBagConstraints.CENTER;
+                constraints.gridx = i;
+                constraints.gridy = j;
+                constraints.weightx = 20;
+                constraints.insets = new Insets(10, 10, 10, 10);
+                gridBag.setConstraints(jl, constraints);
+                panel.add(jl);
+            }
+
+        }
+        /*   for (int i = 0; i < nombreBotones.size(); i++) {
+            l1 = new JLabel(nombreBotones.get(i));
+            constraints.fill = GridBagConstraints.CENTER;
+            constraints.gridx = 0;
+            constraints.gridy = i;
+            constraints.weightx = 20;
+            constraints.insets = new Insets(10, 10, 10, 10);
+            gridBag.setConstraints(l1, constraints);
+            panel.add(l1);
+
+            t1 = new JTextField(10);
+            constraints.fill = GridBagConstraints.HORIZONTAL; //Llena el espacio restante con el componente. HORIZONTAL, VERTICAL o BOTH.
+            constraints.gridx = 1;//Indica la posicion en las columnas.
+            constraints.gridy = 0;//Indica la posicion en las filas.
+            constraints.weightx = 150; //Tamaño minimo del elemento en X 
+            constraints.insets = new Insets(10, 10, 10, 10); //Establece las distancias minimas que separan un componente de otro.
+           
+            gridBag.setConstraints(t1, constraints);
+            panel.add(t1);
+         */
+
+ /*--Método --> add 
+			Permite agregar un componente a otro componente. 
+			Se tiene que tener encuenta la jerarquia entre componentes AWT y Swing.
+		--*/
+        //add(panel);
+        panel.setSize(500, 500);
+        contenedorLugares.add(panel);
+
+        /*-- Método -> setLocationRelativeTo();
+		Ubicación relativa a un componente, 
+		el parametro null indica ningún componente.
+		Estableciendo el parametro null en este método,
+		se ubicará en la mitad de la pantalla.		
+		--*/
     }
 
     /**
@@ -27,21 +122,160 @@ public class LugarParqueoView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        contenedorLugares = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        placaParte1 = new javax.swing.JTextField();
+        placaParte2 = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        calculotiempo = new javax.swing.JButton();
+        txtCalculoPrecio = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jPanel2.setLayout(null);
+
+        placaParte1.setFont(new java.awt.Font("Arial", 0, 50)); // NOI18N
+        placaParte1.setForeground(new java.awt.Color(0, 0, 0));
+        placaParte1.setAutoscrolls(false);
+        placaParte1.setBorder(null);
+        placaParte1.setCaretColor(new java.awt.Color(0, 0, 0));
+        placaParte1.setOpaque(false);
+        placaParte1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                placaParte1KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                placaParte1KeyTyped(evt);
+            }
+        });
+        jPanel2.add(placaParte1);
+        placaParte1.setBounds(70, 80, 120, 70);
+
+        placaParte2.setFont(new java.awt.Font("Arial", 0, 55)); // NOI18N
+        placaParte2.setForeground(new java.awt.Color(0, 0, 0));
+        placaParte2.setBorder(null);
+        placaParte2.setOpaque(false);
+        placaParte2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                placaParte2ActionPerformed(evt);
+            }
+        });
+        placaParte2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                placaParte2KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                placaParte2KeyTyped(evt);
+            }
+        });
+        jPanel2.add(placaParte2);
+        placaParte2.setBounds(220, 80, 100, 70);
+
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/ResourcesVisual/placa.png"))); // NOI18N
+        jLabel4.setToolTipText("");
+        jPanel2.add(jLabel4);
+        jLabel4.setBounds(40, 40, 310, 160);
+
+        calculotiempo.setText("calcular tiempo");
+        calculotiempo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                calculotiempoActionPerformed(evt);
+            }
+        });
+
+        txtCalculoPrecio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtCalculoPrecioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 912, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 400, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtCalculoPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(calculotiempo)
+                        .addGap(98, 98, 98)))
+                .addComponent(contenedorLugares, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 387, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(contenedorLugares, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(86, 86, 86)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(calculotiempo)
+                    .addComponent(txtCalculoPrecio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(143, 143, 143))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void placaParte1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaParte1KeyPressed
+
+    }//GEN-LAST:event_placaParte1KeyPressed
+
+    private void placaParte2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_placaParte2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_placaParte2ActionPerformed
+
+    private void placaParte2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaParte2KeyPressed
+
+
+    }//GEN-LAST:event_placaParte2KeyPressed
+
+    private void placaParte1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaParte1KeyTyped
+        String texto = placaParte1.getText();
+        texto =texto.toUpperCase();
+        placaParte1.setText(texto);
+        if (placaParte1.getText().length() == 3) {
+            evt.consume();
+
+        } else {
+            char c = evt.getKeyChar();
+            
+            if (Character.isDigit(c)) {
+                getToolkit().beep();
+                evt.consume();
+            }
+        }
+
+
+    }//GEN-LAST:event_placaParte1KeyTyped
+
+    private void placaParte2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_placaParte2KeyTyped
+        if (placaParte2.getText().length() == 3) {
+            evt.consume();
+
+        }
+    }//GEN-LAST:event_placaParte2KeyTyped
+
+    private void txtCalculoPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCalculoPrecioActionPerformed
+        FacturaController fc = new FacturaController();
+        double precio = fc.precioSalida(1, "ASD456");
+        txtCalculoPrecio.setText(precio + "");
+        
+    }//GEN-LAST:event_txtCalculoPrecioActionPerformed
+
+    private void calculotiempoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calculotiempoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_calculotiempoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -54,7 +288,7 @@ public class LugarParqueoView extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Windows".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -80,5 +314,12 @@ public class LugarParqueoView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton calculotiempo;
+    private javax.swing.JPanel contenedorLugares;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField placaParte1;
+    private javax.swing.JTextField placaParte2;
+    private javax.swing.JTextField txtCalculoPrecio;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,13 +13,13 @@ public class LugarParqueo {
 
     private int idLugarParqueo;
     private int idTipoLugar;
-    private boolean disponibilidad;
+    private int disponibilidad;
     private int capacidad;
 
     public LugarParqueo() {
     }
 
-    public LugarParqueo(int idLugarParqueo, int idTipoLugar, boolean disponibilidad, int capacidad) {
+    public LugarParqueo(int idLugarParqueo, int idTipoLugar, int disponibilidad, int capacidad) {
         this.idLugarParqueo = idLugarParqueo;
         this.idTipoLugar = idTipoLugar;
         this.disponibilidad = disponibilidad;
@@ -42,11 +42,11 @@ public class LugarParqueo {
         this.idTipoLugar = idTipoLugar;
     }
 
-    public boolean isDisponibilidad() {
+    public int isDisponibilidad() {
         return disponibilidad;
     }
 
-    public void setDisponibilidad(boolean disponibilidad) {
+    public void setDisponibilidad(int disponibilidad) {
         this.disponibilidad = disponibilidad;
     }
 

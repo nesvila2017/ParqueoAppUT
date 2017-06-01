@@ -5,34 +5,43 @@
  */
 package model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  *
  * @author GIGABYTE
  */
 public class RegistroParqueo {
-
-    private Date fechaHoraEntrada;
+    private int idRegistroParqueo;
+    private Timestamp fechaHoraEntrada;
     private String placaVehiculo;
     private int idLugarParqueo;
-    private int idTipoLugar;
+    
 
     public RegistroParqueo() {
     }
 
-    public RegistroParqueo(Date fechaHoraEntrada, String placaVehiculo, int idLugarParqueo, int idTipoLugar) {
+    public RegistroParqueo(int idRegistroParqueo, Timestamp fechaHoraEntrada, String placaVehiculo, int idLugarParqueo) {
+        this.idRegistroParqueo = idRegistroParqueo;
         this.fechaHoraEntrada = fechaHoraEntrada;
         this.placaVehiculo = placaVehiculo;
         this.idLugarParqueo = idLugarParqueo;
-        this.idTipoLugar = idTipoLugar;
     }
 
-    public Date getFechaHoraEntrada() {
+    public int getIdRegistroParqueo() {
+        return idRegistroParqueo;
+    }
+
+    public void setIdRegistroParqueo(int idRegistroParqueo) {
+        this.idRegistroParqueo = idRegistroParqueo;
+    }
+
+
+    public Timestamp getFechaHoraEntrada() {
         return fechaHoraEntrada;
     }
 
-    public void setFechaHoraEntrada(Date fechaHoraEntrada) {
+    public void setFechaHoraEntrada(Timestamp fechaHoraEntrada) {
         this.fechaHoraEntrada = fechaHoraEntrada;
     }
 
@@ -52,12 +61,6 @@ public class RegistroParqueo {
         this.idLugarParqueo = idLugarParqueo;
     }
 
-    public int getIdTipoLugar() {
-        return idTipoLugar;
-    }
-
-    public void setIdTipoLugar(int idTipoLugar) {
-        this.idTipoLugar = idTipoLugar;
-    }
+    
 
 }
