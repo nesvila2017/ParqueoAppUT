@@ -29,13 +29,15 @@ public class RegistroParqueoController {
     }
     
     
-    private void createRegistroParqueo(int idRegistro, String placaVehiculo, int idLugarParqueo ){
+    public void createRegistroParqueo(String placaVehiculo, int idLugarParqueo ){
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("INSERT INTO registroparqueo (idRegistroParqueo, fechaHoraEntrada, placaVehiculo, idLugarParqueo) VALUES (? , NOW(), ?, ?)");
-            ps.setInt(1, idRegistro);
-            ps.setString(2, placaVehiculo);
-            ps.setInt(3, idLugarParqueo);
+            
+            
+            ps = connect.getConexion().prepareStatement("INSERT INTO registroparqueo (fechaHoraEntrada, placaVehiculo, LugarParqueo_idLugarParqueo) VALUES (NOW(), ?, ?)");
+            
+            ps.setString(1, placaVehiculo);
+            ps.setInt(2, idLugarParqueo);
             ps.execute();
             ps.close();
             
@@ -45,7 +47,7 @@ public class RegistroParqueoController {
         
     }
     
-    private void eliminarRegistroParqueo(int idRegistro) {
+    public void eliminarRegistroParqueo(int idRegistro) {
         PreparedStatement ps;
         try {
             ps = connect.getConexion().prepareStatement("DELETE FROM RegistroParqueo WHERE idRegistroParqueo= ?");
@@ -58,13 +60,40 @@ public class RegistroParqueoController {
         }
     }
 
-    private RegistroParqueo mostrarRegistroParqueo(String placa, Timestamp fechaEntrada) {
+    public RegistroParqueo mostrarRegistroParqueo(String placa, Timestamp fechaEntrada) {
         //fechaHoraEntrada, placaVehiculo, idLugarParqueo, idTipoLugar
         PreparedStatement ps;
         ResultSet rs;
         RegistroParqueo rp = new RegistroParqueo();
         try {
-            ps = connect.getConexion().prepareStatement("SELECT idRegistroParqueo, fechaHoraEntrada, placaVehiculo, idLugarParqueo FROM registroParqueo WHERE fechaHoraEntrada = ? and PlacaVehiculo = ?");
+            ps = connect.getConexion().prepareStatement("SELECT * FROM registroparqueo where fechaHoraEntrada =? and placaVehiculo = ?");
+            ps.setTimestamp(1, fechaEntrada);
+            ps.setString(2, placa);
+            rs = ps.executeQuery();
+            rs.next();
+            rp.setIdRegistroParqueo(rs.getInt(1));
+            rp.setFechaHoraEntrada(rs.getTimestamp(2));
+            rp.setPlacaVehiculo(rs.getString(3));
+            rp.setIdLugarParqueo(rs.getInt(4));
+            ps.close();
+            return rp;
+
+        } catch (SQLException ex) {
+            System.out.println("Error al Mostrar lugar de parqueo: " + ex);
+        }
+
+        return null;
+
+    }
+    
+    
+    public RegistroParqueo buscarRegistroParqueoOcupado(String placa, Timestamp fechaEntrada) {
+        //fechaHoraEntrada, placaVehiculo, idLugarParqueo, idTipoLugar
+        PreparedStatement ps;
+        ResultSet rs;
+        RegistroParqueo rp = new RegistroParqueo();
+        try {
+            ps = connect.getConexion().prepareStatement("select placa from registroparqueo inner join lugarparqueo on LugarParqueo_idLugarParqueo = idLugarParqueo where disponibilidad = ? and fechaHoraEntrada like '% ? %';");
             ps.setTimestamp(1, fechaEntrada);
             ps.setString(2, placa);
             rs = ps.executeQuery();
@@ -72,7 +101,7 @@ public class RegistroParqueoController {
             rp.setFechaHoraEntrada(rs.getTimestamp(2));
             rp.setPlacaVehiculo(rs.getString(3));
             rp.setIdLugarParqueo(rs.getInt(4));
-            
+            ps.close();
             return rp;
 
         } catch (SQLException ex) {
@@ -83,7 +112,7 @@ public class RegistroParqueoController {
 
     }
 
-    private List<RegistroParqueo> mostrarRegistroParqueo() {
+    public List<RegistroParqueo> mostrarRegistroParqueo() {
         PreparedStatement ps;
         ResultSet rs;
         ArrayList<RegistroParqueo> listaRegistroParqueo = new ArrayList<>();

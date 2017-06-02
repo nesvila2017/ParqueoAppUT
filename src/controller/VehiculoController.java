@@ -25,7 +25,7 @@ public class VehiculoController {
         this.connect = new Conexion();
     }
 
-    private void createVehiculo(String placaVehiculo, int idTipoVehiculo) {
+    public void createVehiculo(String placaVehiculo, int idTipoVehiculo) {
         PreparedStatement ps;
 
         try {
@@ -41,7 +41,7 @@ public class VehiculoController {
         }
     }
 
-    private void updateVeciculo(String placa, int TipoVehic) {
+    public void updateVeciculo(String placa, int TipoVehic) {
         PreparedStatement ps;
         try {
             ps = connect.getConexion().prepareStatement("UPDATE INTO Vehiculo SET placaVehiculo = ? TipoVehiculo = ? WHERE placaVehiculo = ?");
@@ -58,7 +58,7 @@ public class VehiculoController {
 
     }
 
-    private Vehiculo buscarVehiculoPorPlaca(String placa) {
+    public Vehiculo buscarVehiculoPorPlaca(String placa) {
 
         Vehiculo v = new Vehiculo();
         PreparedStatement ps;
@@ -71,8 +71,10 @@ public class VehiculoController {
             while (rs.next()) {
                 v.setPlaca(rs.getString(1));
                 v.setIdtipoVehiculo(rs.getInt(2));
+                
                 return v;
             }
+            ps.close();
         } catch (SQLException ex) {
             System.out.println("Error al buscar vehiculo: " + ex);
         } finally {
@@ -81,7 +83,7 @@ public class VehiculoController {
         return null;
     }
 
-    private List<Vehiculo> mostrarTodosLosVehiculosRegistrados() {
+    public List<Vehiculo> mostrarTodosLosVehiculosRegistrados() {
         ArrayList<Vehiculo> vlista = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
@@ -94,6 +96,7 @@ public class VehiculoController {
                 v.setIdtipoVehiculo(rs.getInt(2));
                 vlista.add(v);
             }
+            ps.close();
             return vlista;
 
         } catch (SQLException ex) {
@@ -103,7 +106,7 @@ public class VehiculoController {
         return vlista;
     }
 
-    private List<Vehiculo> mostrarTodosLosVehiculosPorTipo(int idTipo) {
+    public List<Vehiculo> mostrarTodosLosVehiculosPorTipo(int idTipo) {
         ArrayList<Vehiculo> vlista = new ArrayList<>();
 
         PreparedStatement ps;
@@ -119,6 +122,7 @@ public class VehiculoController {
                 v.setIdtipoVehiculo(rs.getInt(2));
                 vlista.add(v);
             }
+            ps.close();
             return vlista;
 
         } catch (SQLException ex) {
@@ -128,7 +132,7 @@ public class VehiculoController {
         return vlista;
     }
 
-    private boolean eliminarVehiculo(String placa) {
+    public boolean eliminarVehiculo(String placa) {
         PreparedStatement ps;
         try {
             ps = connect.getConexion().prepareStatement("DELETE FROM Vehiculo WHERE placaVehiculo = ?");

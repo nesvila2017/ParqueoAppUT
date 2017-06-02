@@ -42,7 +42,7 @@ public class LugarParqueo {
         this.idTipoLugar = idTipoLugar;
     }
 
-    public int isDisponibilidad() {
+    public int getDisponibilidad() {
         return disponibilidad;
     }
 

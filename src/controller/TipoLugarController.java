@@ -28,9 +28,9 @@ public class TipoLugarController {
     public void createTipoLugar(int idTipo, String tipoLugar) {
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("INSERT INTO tipoLugar (idTipoLugar, tipoLuga) values (?,?)");
-            ps.setInt(1, idTipo);
-            ps.setString(2, tipoLugar);
+            ps = connect.getConexion().prepareStatement("INSERT INTO tipoLugar (tipoLuga) values (?)");
+            
+            ps.setString(1, tipoLugar);
             ps.execute();
             ps.close();
         } catch (SQLException error) {
@@ -44,10 +44,9 @@ public class TipoLugarController {
     public void actualizarTipoLugar(int idTipo, String tipoLugar) {
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("UPDATE tipoLugar SET idTipoLugar = ?, tipoLuga = ? WHERE idTipoLugar = ?");
-            ps.setInt(1, idTipo);
-            ps.setString(2, tipoLugar);
-            ps.setInt(3, idTipo);
+            ps = connect.getConexion().prepareStatement("UPDATE tipoLugar tipoLuga = ? WHERE idTipoLugar = ?");
+            ps.setString(1, tipoLugar);
+            ps.setInt(2, idTipo);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
