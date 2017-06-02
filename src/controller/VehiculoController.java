@@ -18,16 +18,16 @@ import model.Vehiculo;
  * @author GIGABYTE
  */
 public class VehiculoController {
-    
+
     private final Conexion connect;
-    
+
     public VehiculoController() {
         this.connect = new Conexion();
     }
-    
-    private void createVehiculo(String placaVehiculo, int idTipoVehiculo) {
+
+    public void createVehiculo(String placaVehiculo, int idTipoVehiculo) {
         PreparedStatement ps;
-        
+
         try {
             ps = connect.getConexion().prepareStatement("INSERT INTO Vehiculo (placaVehiculo, TipoVehiculo_idTipoVehiculo) values(?,?)");
             ps.setString(1, placaVehiculo);
@@ -40,8 +40,8 @@ public class VehiculoController {
             connect.cerraConexion();
         }
     }
-    
-    private void updateVeciculo(String placa, int TipoVehic) {
+
+    public void updateVeciculo(String placa, int TipoVehic) {
         PreparedStatement ps;
         try {
             ps = connect.getConexion().prepareStatement("UPDATE INTO Vehiculo SET placaVehiculo = ? TipoVehiculo = ? WHERE placaVehiculo = ?");
@@ -55,15 +55,15 @@ public class VehiculoController {
         } finally {
             connect.cerraConexion();
         }
-        
+
     }
-    
-    private Vehiculo buscarVehiculoPorPlaca(String placa) {
-        
+
+    public Vehiculo buscarVehiculoPorPlaca(String placa) {
+
         Vehiculo v = new Vehiculo();
         PreparedStatement ps;
         ResultSet rs;
-        
+
         try {
             ps = connect.getConexion().prepareStatement("SELECT placaVehiculo, TipoVehiculo_idTipoVehiculo FROM Vehiculo WHERE placaVehiculo = ?");
             ps.setString(1, placa);
@@ -71,8 +71,10 @@ public class VehiculoController {
             while (rs.next()) {
                 v.setPlaca(rs.getString(1));
                 v.setIdtipoVehiculo(rs.getInt(2));
+                
                 return v;
             }
+            ps.close();
         } catch (SQLException ex) {
             System.out.println("Error al buscar vehiculo: " + ex);
         } finally {
@@ -80,55 +82,56 @@ public class VehiculoController {
         }
         return null;
     }
-    
-    private List<Vehiculo> mostrarTodosLosVehiculosRegistrados() {
+
+    public List<Vehiculo> mostrarTodosLosVehiculosRegistrados() {
         ArrayList<Vehiculo> vlista = new ArrayList<>();
         PreparedStatement ps;
         ResultSet rs;
         try {
             ps = connect.getConexion().prepareStatement("SELECT * FROM VEHICULO");
-            rs=ps.executeQuery();
-            while (rs.next()) {  
+            rs = ps.executeQuery();
+            while (rs.next()) {
                 Vehiculo v = new Vehiculo();
                 v.setPlaca(rs.getString(1));
                 v.setIdtipoVehiculo(rs.getInt(2));
                 vlista.add(v);
             }
+            ps.close();
             return vlista;
-                    
+
         } catch (SQLException ex) {
-            System.out.println("Error al mostrar todos los vehiculos: " +ex);
+            System.out.println("Error al mostrar todos los vehiculos: " + ex);
         }
-        
-        return vlista;        
+
+        return vlista;
     }
-    
-        private List<Vehiculo> mostrarTodosLosVehiculosPorTipo(int idTipo) {
+
+    public List<Vehiculo> mostrarTodosLosVehiculosPorTipo(int idTipo) {
         ArrayList<Vehiculo> vlista = new ArrayList<>();
-        
+
         PreparedStatement ps;
         ResultSet rs;
         try {
             ps = connect.getConexion().prepareStatement("SELECT * FROM VEHICULO WHERE TipoVehiculo_IdTipoVehiculo = ?");
             ps.setInt(1, idTipo);
-            rs=ps.executeQuery();
-            
-            while (rs.next()) {  
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
                 Vehiculo v = new Vehiculo();
                 v.setPlaca(rs.getString(1));
                 v.setIdtipoVehiculo(rs.getInt(2));
                 vlista.add(v);
             }
             return vlista;
-                    
+
         } catch (SQLException ex) {
-            System.out.println("Error al mostrar todos los vehiculos por tipo: " +ex);
+            System.out.println("Error al mostrar todos los vehiculos por tipo: " + ex);
         }
-        
-        return vlista;        
+
+        return vlista;
     }
-    
-    private boolean eliminarVehiculo(String placa){
+
+    public boolean eliminarVehiculo(String placa) {
         PreparedStatement ps;
         try {
             ps = connect.getConexion().prepareStatement("DELETE FROM Vehiculo WHERE placaVehiculo = ?");
@@ -137,11 +140,11 @@ public class VehiculoController {
             ps.close();
             return true;
         } catch (SQLException ex) {
-            System.out.println("Error al eliminar vehiculo: " +ex);
-        }finally{
+            System.out.println("Error al eliminar vehiculo: " + ex);
+        } finally {
             connect.cerraConexion();
         }
         return false;
     }
-    
+
 }

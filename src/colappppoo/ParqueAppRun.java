@@ -5,6 +5,8 @@
  */
 package colappppoo;
 
+import view.LugarParqueoView;
+
 /**
  *
  * @author GIGABYTE
@@ -16,6 +18,9 @@ public class ParqueAppRun {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        LugarParqueoView lv = new LugarParqueoView();
+        lv.setVisible(true
+        );
     }
     
 }
