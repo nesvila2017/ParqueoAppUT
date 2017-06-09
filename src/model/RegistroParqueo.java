@@ -12,25 +12,25 @@ import java.sql.Timestamp;
  * @author GIGABYTE
  */
 public class RegistroParqueo {
+
     private int idRegistroParqueo;
     private Timestamp fechaHoraEntrada;
     private String placaVehiculo;
+    private String tipoVehiculo;
     private int idLugarParqueo;
     private String estadoRegistro;
-    
 
     public RegistroParqueo() {
     }
 
-    public RegistroParqueo(int idRegistroParqueo, Timestamp fechaHoraEntrada, String placaVehiculo, int idLugarParqueo, String estadoRegistro) {
+    public RegistroParqueo(int idRegistroParqueo, Timestamp fechaHoraEntrada, String placaVehiculo, String tipoVehiculo, int idLugarParqueo, String estadoRegistro) {
         this.idRegistroParqueo = idRegistroParqueo;
         this.fechaHoraEntrada = fechaHoraEntrada;
         this.placaVehiculo = placaVehiculo;
+        this.tipoVehiculo = tipoVehiculo;
         this.idLugarParqueo = idLugarParqueo;
         this.estadoRegistro = estadoRegistro;
     }
-
-    
 
     public int getIdRegistroParqueo() {
         return idRegistroParqueo;
@@ -39,7 +39,6 @@ public class RegistroParqueo {
     public void setIdRegistroParqueo(int idRegistroParqueo) {
         this.idRegistroParqueo = idRegistroParqueo;
     }
-
 
     public Timestamp getFechaHoraEntrada() {
         return fechaHoraEntrada;
@@ -73,6 +72,12 @@ public class RegistroParqueo {
         this.estadoRegistro = estadoRegistro;
     }
 
-    
+    public String getTipoVehiculo() {
+        return tipoVehiculo;
+    }
+
+    public void setTipoVehiculo(String tipoVehiculo) {
+        this.tipoVehiculo = tipoVehiculo;
+    }
 
 }

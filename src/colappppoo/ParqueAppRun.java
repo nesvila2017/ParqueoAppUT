@@ -5,7 +5,7 @@
  */
 package colappppoo;
 
-import view.LugarParqueoView;
+import controller.Verificacion;
 
 /**
  *
@@ -18,9 +18,7 @@ public class ParqueAppRun {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        LugarParqueoView lv = new LugarParqueoView();
-        lv.setVisible(true
-        );
+        Verificacion v = new Verificacion();
+        v.validacion();
     }
-    
 }

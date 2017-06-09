@@ -25,36 +25,33 @@ public class TipoVehiculoController {
         this.connector = new Conexion();
     }
 
-    public void insertTipoVehiculo(int idTipo, String tipoVeh) {
+    public void insertTipoVehiculo(String tipoVeh) {
 
         PreparedStatement ps;
         try {
-            ps = connector.getConexion().prepareStatement("INSERT INTO TipoVehiculo (idTipoVehiculo, tipoVehic) values (?,?)");
-            ps.setInt(1, idTipo);
-            ps.setString(2, tipoVeh);
+            ps = connector.getConexion().prepareStatement("INSERT INTO TipoVehiculo (tipoVehic) values (?)");
+            ps.setString(1, tipoVeh);
+            ps.execute();
             ps.close();
         } catch (SQLException ex) {
             System.out.println("error insertar tipo vehiculo: " + ex);
-        } finally {
-            connector.cerraConexion();
         }
     }
 
-    public void actualizarTipoVehiculo(int numIdent, String tipoVehiculo) {
+    public void actualizarTipoVehiculo(int idTipo, String tipoVehiculo) {
         PreparedStatement ps;
         try {
-            ps = connector.getConexion().prepareStatement("UPDATE TipoVehiculo SET tipoVehic WHERE idTipoVehiculo = ?");
+            ps = connector.getConexion().prepareStatement("UPDATE TipoVehiculo SET tipoVehic =? WHERE idTipoVehiculo = ?");
             ps.setString(1, tipoVehiculo);
+            ps.setInt(2, idTipo);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException ex) {
             System.out.println("error actualizar tipo vehiculo: " + ex);
 
-        } finally{
-            connector.cerraConexion();
         }
     }
-    
+
     public void eliminarTipoVehiculo(int idTipo) {
         PreparedStatement ps;
 
@@ -64,8 +61,6 @@ public class TipoVehiculoController {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al eliminar tipo Vehiculo: " + e);
-        } finally {
-            connector.cerraConexion();
         }
 
     }
@@ -75,7 +70,7 @@ public class TipoVehiculoController {
         ResultSet rs;
         try {
             PreparedStatement ps;
-            ps = connector.getConexion().prepareStatement("SELECT * FROM persona");
+            ps = connector.getConexion().prepareStatement("SELECT * FROM TipoVehiculo");
             rs = ps.executeQuery();
             ArrayList<TipoVehiculo> tipoVehiculo = new ArrayList<>();
             while (rs.next()) {
@@ -90,8 +85,6 @@ public class TipoVehiculoController {
         } catch (SQLException ex) {
             System.out.println("Error al mostra los tipos de vehiculo: " + ex);
             return null;
-        } finally {
-            connector.cerraConexion();
         }
 
     }
@@ -113,12 +106,30 @@ public class TipoVehiculoController {
         } catch (SQLException ex) {
             System.out.println("Error al mostrar TipoVehiculo por id: " + ex);
             return null;
-        } finally {
-            connector.cerraConexion();
         }
         return tipo;
 
     }
-    
+
+    public List<String> mostrarTiposVehiculos() {
+        ArrayList<String> listTipVeh = new ArrayList<>();
+        ResultSet rs;
+        String tip;
+        try {
+            PreparedStatement ps;
+            ps = connector.getConexion().prepareStatement("SELECT TipoVehic FROM tipoVehiculo");
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                tip = (rs.getString(1));
+                listTipVeh.add(tip);
+            }
+            return listTipVeh;
+
+        } catch (SQLException ex) {
+            System.out.println("Error al mostrar TipoVehiculo por id: " + ex);
+            return null;
+        }
+
+    }
 
 }

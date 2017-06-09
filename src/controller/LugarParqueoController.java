@@ -27,6 +27,25 @@ public class LugarParqueoController {
         this.connect = new Conexion();
     }
 
+    public int conteoUbicaciones() {
+        int conteo = 0;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = connect.getConexion().prepareStatement("SELECT COUNT(*) FROM LUGARPARQUEO");
+            rs = ps.executeQuery();
+            rs.next();
+            conteo = rs.getInt(1);
+            ps.close();
+            return conteo;
+
+        } catch (SQLException e) {
+            System.out.println("Error en conteo de ubicaciones: " + e);
+        }
+        return conteo;
+
+    }
+
     public void createLugarParqueo(int tipoLugar, int dispo, int capacidad) {
         PreparedStatement ps;
         try {
@@ -45,7 +64,7 @@ public class LugarParqueoController {
 
     public void updateLugarParqueo(int idLugarParq, int tipoLugarNuevo, int dispo, int capacidad) {
         PreparedStatement ps;
-        //idLugarParqueo`, `idTipoLugar`, `disponibilidad`, `capacidad                                              
+        //idLugarParqueo`, `idTipoLugar`, `disponibilidad`, `capacidad
         try {                                           //UPDATE parqueo.lugarParqueo SET idLugarParqueo='2', idTipoLugar='2', disponibilidad='2', capacidad='2' WHERE idLugarParqueo='3';
             ps = connect.getConexion().prepareStatement("UPDATE parqueo.lugarParqueo SET idLugarParqueo=?, idTipoLugar=?, disponibilidad=?, capacidad=? WHERE idLugarParqueo=?");
             ps.setInt(1, idLugarParq);

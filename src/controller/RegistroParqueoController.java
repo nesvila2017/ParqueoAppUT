@@ -48,7 +48,7 @@ public class RegistroParqueoController {
     public void actualizarEstadoRegistro(int idRegistro, String placa, String estado) {
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("UPDATE RegistroParqueo SET estadoRegistro = ?  WHERE idRegistroParqueo = ? and placaVehiculo=?");
+            ps = connect.getConexion().prepareStatement("UPDATE RegistroParqueo SET estadoRegistro = ?, fechaHoraEntrada = fechaHoraEntrada   WHERE idRegistroParqueo = ? and placaVehiculo=?");
             ps.setString(1, estado);
             ps.setInt(2, idRegistro);
             ps.setString(3, placa);
@@ -58,7 +58,7 @@ public class RegistroParqueoController {
             System.out.println("error actualizar Tarifa: " + ex);
         }
     }
-    
+
     public void eliminarRegistroParqueo(int idRegistro) {
         PreparedStatement ps;
         try {
@@ -99,25 +99,48 @@ public class RegistroParqueoController {
 
     }
 
-     public boolean buscarRegistroParqueoEstado(String placa) {
+    public boolean buscarRegistroParqueoEstadoFacturado(String placa, int idreg) {
         //fechaHoraEntrada, placaVehiculo, idLugarParqueo, idTipoLugar
         PreparedStatement ps;
         ResultSet rs;
-        RegistroParqueo rp = new RegistroParqueo();
+
         try {
-            ps = connect.getConexion().prepareStatement("select count(*) from registroparqueo where placaVehiculo = ? and estadoRegistro ='EN PARQUEADERO'");
+            ps = connect.getConexion().prepareStatement("select count(*) from registroparqueo where placaVehiculo = ? and estadoRegistro ='FACTURADO' and idRegistroParqueo = ?");
             ps.setString(1, placa);
+            ps.setInt(2, idreg);
             rs = ps.executeQuery();
             rs.next();
-            int numRegEstado = rs.getInt(1);
+            Integer numRegEstado = rs.getInt(1);
             ps.close();
-            return numRegEstado==0;
+            return numRegEstado > 0;
+
         } catch (SQLException ex) {
             System.out.println("Error al Mostrar registro de parqueo por buscarRegistroParqueoEstado: " + ex);
         }
         return false;
     }
-    
+
+    public boolean buscarRegistroParqueoEstado(String placa) {
+        //fechaHoraEntrada, placaVehiculo, idLugarParqueo, idTipoLugar
+        PreparedStatement ps;
+        ResultSet rs;
+
+        try {
+            ps = connect.getConexion().prepareStatement("select count(*) from registroparqueo where placaVehiculo = ? and estadoRegistro ='EN PARQUEADERO'");
+            ps.setString(1, placa);
+            rs = ps.executeQuery();
+            rs.next();
+            Integer numRegEstado = rs.getInt(1);
+            System.out.println("numregestado" + numRegEstado);
+            ps.close();
+            return numRegEstado > 0;
+
+        } catch (SQLException ex) {
+            System.out.println("Error al Mostrar registro de parqueo por buscarRegistroParqueoEstado: " + ex);
+        }
+        return false;
+    }
+
     public RegistroParqueo buscarRegistroParqueoOcupado(String placa, Timestamp fechaEntrada) {
         //fechaHoraEntrada, placaVehiculo, idLugarParqueo, idTipoLugar
         PreparedStatement ps;
@@ -150,18 +173,21 @@ public class RegistroParqueoController {
         ArrayList<RegistroParqueo> listaRegistroParqueo = new ArrayList<>();
 
         try {
-            ps = connect.getConexion().prepareStatement("SELECT * FROM RegistroParqueo");
+            ps = connect.getConexion().prepareStatement("SELECT rp.idRegistroParqueo, rp.fechaHoraEntrada, rp.placaVehiculo, tp.TipoVehic , rp.LugarParqueo_idLugarParqueo , rp.estadoRegistro FROM RegistroParqueo as rp inner join Vehiculo as v on v.placaVehiculo=rp.placaVehiculo inner join TipoVehiculo as tp on tp.idTipoVehiculo = v.TipoVehiculo_idTipoVehiculo");
             rs = ps.executeQuery();
             while (rs.next()) {
                 RegistroParqueo rp = new RegistroParqueo();
                 rp.setIdRegistroParqueo(rs.getInt(1));
                 rp.setFechaHoraEntrada(rs.getTimestamp(2));
                 rp.setPlacaVehiculo(rs.getString(3));
-                rp.setIdLugarParqueo(rs.getInt(4));
-                rp.setEstadoRegistro(rs.getString(5));
+                rp.setTipoVehiculo(rs.getString(4));
+                rp.setIdLugarParqueo(rs.getInt(5));
+                rp.setEstadoRegistro(rs.getString(6));
                 listaRegistroParqueo.add(rp);
 
             }
+
+            ps = connect.getConexion().prepareStatement("");
             ps.close();
 
             return listaRegistroParqueo;

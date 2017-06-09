@@ -25,18 +25,34 @@ public class TipoLugarController {
         this.connect = new Conexion();
     }
 
-    public void createTipoLugar(int idTipo, String tipoLugar) {
+    public int conteoTipoLugar() {
+        int conteo = 0;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = connect.getConexion().prepareStatement("SELECT COUNT(*) FROM tipolugar");
+            rs = ps.executeQuery();
+            rs.next();
+            conteo = rs.getInt(1);
+            ps.close();
+            return conteo;
+
+        } catch (SQLException e) {
+            System.out.println("Error en conteo de tipo lugar: " + e);
+        }
+        return conteo;
+
+    }
+
+    public void createTipoLugar(String tipoLugar) {
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("INSERT INTO tipoLugar (idTipoLugar, tipoLuga) values (?,?)");
-            ps.setInt(1, idTipo);
-            ps.setString(2, tipoLugar);
+            ps = connect.getConexion().prepareStatement("INSERT INTO tipoLugar (tipoLuga) values (?)");
+            ps.setString(1, tipoLugar);
             ps.execute();
             ps.close();
         } catch (SQLException error) {
             System.out.println("Error al insertar tipoLugar: " + error);
-        } finally {
-            connect.cerraConexion();
         }
 
     }
@@ -44,16 +60,13 @@ public class TipoLugarController {
     public void actualizarTipoLugar(int idTipo, String tipoLugar) {
         PreparedStatement ps;
         try {
-            ps = connect.getConexion().prepareStatement("UPDATE tipoLugar SET idTipoLugar = ?, tipoLuga = ? WHERE idTipoLugar = ?");
-            ps.setInt(1, idTipo);
-            ps.setString(2, tipoLugar);
-            ps.setInt(3, idTipo);
+            ps = connect.getConexion().prepareStatement("UPDATE tipoLugar SET tipoLuga = ? WHERE idTipoLugar = ?");
+            ps.setString(1, tipoLugar);
+            ps.setInt(2, idTipo);
             ps.executeUpdate();
             ps.close();
         } catch (SQLException e) {
             System.out.println("Error actualizacion de tipoLugar: " + e);
-        } finally {
-            connect.cerraConexion();
         }
     }
 
@@ -66,8 +79,6 @@ public class TipoLugarController {
             ps.executeUpdate();
         } catch (SQLException e) {
             System.out.println("Error al eliminar tipoLugar: " + e);
-        } finally {
-            connect.cerraConexion();
         }
 
     }
@@ -77,7 +88,7 @@ public class TipoLugarController {
         ResultSet rs;
         try {
             PreparedStatement ps;
-            ps = connect.getConexion().prepareStatement("SELECT * FROM persona");
+            ps = connect.getConexion().prepareStatement("SELECT * FROM tipolugar");
             rs = ps.executeQuery();
             ArrayList<TipoLugar> tipoLugar = new ArrayList<>();
             while (rs.next()) {
@@ -92,8 +103,6 @@ public class TipoLugarController {
         } catch (SQLException ex) {
             System.out.println("Error al mostrar los tipos de lugares" + ex);
             return null;
-        } finally {
-            connect.cerraConexion();
         }
 
     }
@@ -115,8 +124,6 @@ public class TipoLugarController {
         } catch (SQLException ex) {
             System.out.println("Error al mostrar TipoLugar por id: " + ex);
             return null;
-        } finally {
-            connect.cerraConexion();
         }
         return tipo;
 

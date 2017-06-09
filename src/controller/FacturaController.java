@@ -6,15 +6,29 @@
 package controller;
 
 import conexionParqueo.Conexion;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
 import model.FacturaDetalle;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.view.JasperViewer;
 
 /**
  *
@@ -142,8 +156,8 @@ public class FacturaController {
         PreparedStatement ps;
         RegistroParqueoController rpc = new RegistroParqueoController();
         try {
-            if (rpc.buscarRegistroParqueoEstado(placaVehiculo) == true) {
-                return false;
+            if (rpc.buscarRegistroParqueoEstadoFacturado(placaVehiculo, idRegistroParqueo) == true) {
+                return true;
             } else {
                 ps = connect.getConexion().prepareStatement("INSERT INTO factura (FechaFactura, fechaSalida, placaVehiculo, idRegistroParqueo, idLugarParqueo, valParqueo) VALUES (now(),now(),?,?,?,?)");
                 ps.setString(1, placaVehiculo);
@@ -152,7 +166,7 @@ public class FacturaController {
                 ps.setDouble(4, valorParqueo);
                 ps.executeUpdate();
                 ps.close();
-                return true;
+                return false;
             }
 
         } catch (SQLException ex) {
@@ -168,18 +182,22 @@ public class FacturaController {
         ArrayList<FacturaDetalle> listaFacturas = new ArrayList<>();
 
         try {
-            ps = connect.getConexion().prepareStatement(" select idFactura, FechaFactura, f.idRegistroParqueo, f.placaVehiculo, fechaHoraEntrada, fechaSalida, idLugarParqueo, f.valParqueo from factura as f inner join registroparqueo as rp on f.idRegistroParqueo = rp.idRegistroParqueo order by f.placaVehiculo and f.idRegistroParqueo");
+            ps = connect.getConexion().prepareStatement("select * from detalle order by idFactura");
             rs = ps.executeQuery();
             while (rs.next()) {
                 FacturaDetalle n = new FacturaDetalle();
                 n.setIdFactura(rs.getInt(1));
-                n.setFechaFactura(rs.getTimestamp(2));
-                n.setIdRegistroParqueo(3);
-                n.setPlacaVehiculo(rs.getString(4));
-                n.setFechaHoraEntrada(rs.getTimestamp(5));
-                n.setFechaSalida(rs.getTimestamp(6));
-                n.setIdLugarParqueo(rs.getInt(7));
-                n.setPrecio(rs.getDouble(8));
+                n.setIdRegistroParqueo(rs.getInt(2));
+                n.setFechaFactura(rs.getTimestamp(3));
+                n.setFechaHoraEntrada(rs.getTimestamp(4));
+                n.setFechaSalida(rs.getTimestamp(5));
+                n.setDuracion(rs.getTime(6));
+                n.setHoras(rs.getInt(7));
+                n.setMinutos(rs.getInt(8));
+                n.setPlacaVehiculo(rs.getString(9));
+                n.setTipoVehTxt(rs.getString(10));
+                n.setIdLugarParqueo(rs.getInt(11));
+                n.setPrecio(rs.getDouble(12));
                 listaFacturas.add(n);
             }
 
@@ -190,6 +208,23 @@ public class FacturaController {
             System.out.println("Error al mostrar todos los registros de factura. " + ex);
         }
         return listaFacturas;
+
+    }
+
+    public double importeTotal() {
+        double importe = 0;
+        PreparedStatement ps;
+        ResultSet rs;
+        try {
+            ps = connect.getConexion().prepareStatement("select sum(valParqueo) as totalImporte from detalle");
+            rs = ps.executeQuery();
+            rs.next();
+            importe = rs.getDouble(1);
+            return importe;
+
+        } catch (SQLException sQLException) {
+        }
+        return 0;
 
     }
 

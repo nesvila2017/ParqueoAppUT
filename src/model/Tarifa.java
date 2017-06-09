@@ -15,16 +15,17 @@ public class Tarifa {
     private String nomTarifa;
     private double precioFraccion;
     private int idTipoVehiculo;
-    
+    private String tipoVehic;
 
     public Tarifa() {
     }
 
-    public Tarifa(int idTarifa, String nomTarifa, double precioFraccion, int idTipoVehiculo) {
+    public Tarifa(int idTarifa, String nomTarifa, double precioFraccion, int idTipoVehiculo, String tipoVehic) {
         this.idTarifa = idTarifa;
         this.nomTarifa = nomTarifa;
         this.precioFraccion = precioFraccion;
         this.idTipoVehiculo = idTipoVehiculo;
+        this.tipoVehic = tipoVehic;
     }
 
     public int getIdTarifa() {
@@ -43,7 +44,6 @@ public class Tarifa {
         this.nomTarifa = nomTarifa;
     }
 
-    
     public double getPrecioFraccion() {
         return precioFraccion;
     }
@@ -58,6 +58,14 @@ public class Tarifa {
 
     public void setIdTipoVehiculo(int idTipoVehiculo) {
         this.idTipoVehiculo = idTipoVehiculo;
+    }
+
+    public String getTipoVehic() {
+        return tipoVehic;
+    }
+
+    public void setTipoVehic(String tipoVehic) {
+        this.tipoVehic = tipoVehic;
     }
 
 }
